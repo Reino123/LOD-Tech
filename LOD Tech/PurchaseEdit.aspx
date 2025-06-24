@@ -1,4 +1,4 @@
-﻿  <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PurchaseEdit.aspx.cs" Inherits="LOD_Tech.PurchaseEdit" %>
+﻿  <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PurchaseEdit.aspx.cs" Inherits="PurchaseEdit" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">

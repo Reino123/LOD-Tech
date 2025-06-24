@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <titlCustomers</title>
+    <title>Customers</title>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>

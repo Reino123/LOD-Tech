@@ -186,6 +186,7 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="SupplierEdit.aspx" />
+    <Content Include="Suppliers.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -296,6 +297,13 @@
     </Compile>
     <Compile Include="SupplierEdit.aspx.designer.cs">
       <DependentUpon>SupplierEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Suppliers.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Suppliers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Suppliers.aspx.designer.cs">
+      <DependentUpon>Suppliers.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

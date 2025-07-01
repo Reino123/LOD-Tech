@@ -16,6 +16,8 @@ using System.Data.SqlClient;
                     dt.Columns.Add("ProductName", typeof(string));
                     dt.Columns.Add("Quantity", typeof(int));
                     dt.Columns.Add("UnitPrice", typeof(decimal));
+                    dt.Rows.Add(dt.NewRow());
+                    //dt.Rows.Add(1, "test", 1, 1);
                     ViewState["PurchaseDetails"] = dt;
                 }
                 return (DataTable)ViewState["PurchaseDetails"];
@@ -28,6 +30,7 @@ using System.Data.SqlClient;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            gvPurchaseDetails.RowDataBound += gvPurchaseDetails_RowDataBound;
             if (!IsPostBack)
             {
                 litTitle.Text = Request.QueryString["id"] != null ? "Edit Purchase" : "Add Purchase";
@@ -43,7 +46,6 @@ using System.Data.SqlClient;
                 {
                     BindPurchaseDetails();
                 }
-                gvPurchaseDetails.RowDataBound += gvPurchaseDetails_RowDataBound;
             }
         }
 
@@ -72,8 +74,13 @@ using System.Data.SqlClient;
             decimal total = 0;
             foreach (DataRow row in PurchaseDetails.Rows)
             {
-                total += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["UnitPrice"]);
-            }
+                try
+                {
+                    total += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["UnitPrice"]);
+                } catch
+                {
+                }
+        }   
             lblTotalAmount.Text = total.ToString("C");
         }
 

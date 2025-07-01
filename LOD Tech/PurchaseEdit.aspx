@@ -1,4 +1,4 @@
-﻿  <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PurchaseEdit.aspx.cs" Inherits="LOD_Tech.PurchaseEdit" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PurchaseEdit.aspx.cs" Inherits="PurchaseEdit" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -22,7 +22,7 @@
                 <asp:RequiredFieldValidator ID="rfvPurchaseDate" runat="server" ControlToValidate="txtPurchaseDate" ErrorMessage="Purchase date is required." CssClass="text-danger" />
             </div>
             <h4>Purchase Details</h4>
-            <asp:GridView ID="gvPurchaseDetails" runat="server" AutoGenerateColumns="False" ShowFooter="True" CssClass="table table-bordered"
+            <asp:GridView ID="gvPurchaseDetails" ShowHeaderWhenEmpty="true" runat="server" AutoGenerateColumns="False" ShowFooter="True" CssClass="table table-bordered"
                 OnRowCommand="gvPurchaseDetails_RowCommand" OnRowDeleting="gvPurchaseDetails_RowDeleting">
                 <Columns>
                     <asp:TemplateField HeaderText="Product">
@@ -66,6 +66,7 @@
             <asp:Button ID="btnSave" runat="server" Text="Save Purchase" CssClass="btn btn-success" OnClick="btnSave_Click" />
             <a href="Purchases.aspx" class="btn btn-secondary">Cancel</a>
         </div>
+        <asp:Image ID="Image1" runat="server" />
     </form>
 </body>
 </html>

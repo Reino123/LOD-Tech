@@ -17,6 +17,7 @@ public partial class SalesOrderEdit : System.Web.UI.Page
                 dt.Columns.Add("ProductName", typeof(string));
                 dt.Columns.Add("Quantity", typeof(int));
                 dt.Columns.Add("UnitPrice", typeof(decimal));
+                dt.Rows.Add(dt.NewRow());
                 ViewState["OrderDetails"] = dt;
             }
             return (DataTable)ViewState["OrderDetails"];
@@ -29,6 +30,7 @@ public partial class SalesOrderEdit : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        gvOrderDetails.RowDataBound += gvOrderDetails_RowDataBound;
         if (!IsPostBack)
         {
             litTitle.Text = Request.QueryString["id"] != null ? "Edit Sales Order" : "Add Sales Order";
@@ -44,7 +46,6 @@ public partial class SalesOrderEdit : System.Web.UI.Page
             {
                 BindOrderDetails();
             }
-            gvOrderDetails.RowDataBound += gvOrderDetails_RowDataBound;
         }
     }
 
@@ -73,7 +74,10 @@ public partial class SalesOrderEdit : System.Web.UI.Page
         decimal total = 0;
         foreach (DataRow row in OrderDetails.Rows)
         {
-            total += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["UnitPrice"]);
+            try
+            {
+                total += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["UnitPrice"]);
+            } catch { }
         }
         lblTotalAmount.Text = total.ToString("C");
     }

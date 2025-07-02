@@ -10,7 +10,7 @@
     <form id="form1" runat="server">
         <div class="container mt-4">
             <a href="Default.aspx" class="btn btn-secondary mb-3">
-                ← Back to ERP
+                &larr; Back to ERP
             </a>
             <h2>Sales Orders</h2>
             <a href="SalesOrderEdit.aspx" class="btn btn-primary mb-3">Add Sales Order</a>

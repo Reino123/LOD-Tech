@@ -92,7 +92,7 @@ using System.Data.SqlClient;
                 var footer = gvPurchaseDetails.FooterRow;
                 var ddlProduct = (System.Web.UI.WebControls.DropDownList)footer.FindControl("ddlProduct");
                 var txtQuantity = (System.Web.UI.WebControls.TextBox)footer.FindControl("txtQuantity");
-                var txtPrice = (System.Web.UI.WebControls.TextBox)footer.FindControl("txtPrice");
+                var txtPrice = (System.Web.UI.WebControls.TextBox)footer.FindControl("txtUnitPrice");
 
                 int productId;
                 int quantity;
@@ -107,7 +107,7 @@ using System.Data.SqlClient;
                     row["ProductID"] = productId;
                     row["ProductName"] = ddlProduct.SelectedItem.Text;
                     row["Quantity"] = quantity;
-                    row["Price"] = Price;
+                    row["UnitPrice"] = Price;
                     dt.Rows.Add(row);
                     PurchaseDetails = dt;
                     BindPurchaseDetails();
@@ -154,11 +154,18 @@ using System.Data.SqlClient;
 
             // Load purchase details
             string detailsQuery = @"
-            SELECT pd.ProductID, p.Name AS ProductName, pd.Quantity, pd.Price
+            SELECT pd.ProductID, p.Name AS ProductName, pd.Quantity, pd.UnitPrice
             FROM PurchaseDetails pd
             INNER JOIN Products p ON pd.ProductID = p.ProductID
             WHERE pd.PurchaseID = @PurchaseID";
             DataTable details = DbHelper.ExecuteSelect(detailsQuery, new SqlParameter("@PurchaseID", purchaseId));
+            // Add 'Price' column and copy values from 'UnitPrice'
+            //if (!details.Columns.Contains("Price"))
+            //    details.Columns.Add("Price", typeof(decimal));
+            //foreach (DataRow r in details.Rows)
+            //{
+            //    r["Price"] = r["UnitPrice"];
+            //}
             PurchaseDetails = details;
             BindPurchaseDetails();
         }
@@ -176,7 +183,10 @@ using System.Data.SqlClient;
             decimal totalAmount = 0;
             foreach (DataRow row in PurchaseDetails.Rows)
             {
-                totalAmount += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["Price"]);
+                if (row["Quantity"] != DBNull.Value && row["UnitPrice"] != DBNull.Value)
+                {
+                    totalAmount += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["UnitPrice"]);
+                }
             }
 
             if (Request.QueryString["id"] != null)
@@ -203,7 +213,7 @@ using System.Data.SqlClient;
                         new SqlParameter("@PurchaseID", purchaseId),
                         new SqlParameter("@ProductID", row["ProductID"]),
                         new SqlParameter("@Quantity", row["Quantity"]),
-                        new SqlParameter("@Price", row["Price"])
+                        new SqlParameter("@Price", row["UnitPrice"])
                     );
                 }
             }
@@ -221,12 +231,12 @@ using System.Data.SqlClient;
                 // Insert details
                 foreach (DataRow row in PurchaseDetails.Rows)
                 {
-                    string insertDetail = "INSERT INTO PurchaseDetails (PurchaseID, ProductID, Quantity, Price) VALUES (@PurchaseID, @ProductID, @Quantity, @Price)";
+                    string insertDetail = "INSERT INTO PurchaseDetails (PurchaseID, ProductID, Quantity, UnitPrice) VALUES (@PurchaseID, @ProductID, @Quantity, @UnitPrice)";
                     DbHelper.ExecuteNonQuery(insertDetail,
                         new SqlParameter("@PurchaseID", purchaseId),
                         new SqlParameter("@ProductID", row["ProductID"]),
                         new SqlParameter("@Quantity", row["Quantity"]),
-                        new SqlParameter("@Price", row["Price"])
+                        new SqlParameter("@UnitPrice", row["UnitPrice"])
                     );
                 }
             }

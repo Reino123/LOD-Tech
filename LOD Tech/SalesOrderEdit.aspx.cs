@@ -173,7 +173,10 @@ public partial class SalesOrderEdit : System.Web.UI.Page
         decimal totalAmount = 0;
         foreach (DataRow row in OrderDetails.Rows)
         {
-            totalAmount += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["UnitPrice"]);
+            if (row["Quantity"] != DBNull.Value && row["UnitPrice"] != DBNull.Value)
+            {
+                totalAmount += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["UnitPrice"]);
+            }
         }
 
         if (Request.QueryString["id"] != null)

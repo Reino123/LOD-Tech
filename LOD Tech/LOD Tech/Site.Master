@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="LOD_Tech.SiteMaster" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="LOD_Tech.SiteMaster" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,12 +64,11 @@
         <div class="erp-container">
             <h1 class="mb-4">Welcome to the ERP page!</h1>
             <a href="Products.aspx" class="btn btn-primary erp-btn">Products</a>
-            <a href="Purchases.aspx" class="btn btn-success erp-btn">Purchases</a>
-            <a href="SalesOrders.aspx" class="btn btn-warning erp-btn">Sales Orders</a>
-            <a href="Customers.aspx" class="btn btn-info erp-btn">Customers</a>
-            <a href="Suppliers.aspx" class="btn btn-dark erp-btn">Suppliers</a>
+            <a href="Purchases.aspx" class="btn btn-primary erp-btn">Purchases</a>
+            <a href="SalesOrders.aspx" class="btn btn-primary erp-btn">Sales Orders</a>
+            <a href="Customers.aspx" class="btn btn-primary erp-btn">Customers</a>
+            <a href="Suppliers.aspx" class="btn btn-primary erp-btn">Suppliers</a>
         </div>
-        <asp:ContentPlaceHolder ID="MainContent" runat="server" />
     </form>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>

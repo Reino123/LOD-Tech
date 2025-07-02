@@ -60,14 +60,15 @@ using System.Data.SqlClient;
             ddlSupplier.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Select Supplier --", ""));
         }
 
-        private void LoadProducts()
-        {
-            string query = "SELECT ProductID, Name FROM Products";
-            DataTable dt = DbHelper.ExecuteSelect(query);
-            ViewState["Products"] = dt;
-        }
+    private void LoadProducts()
+    {
+        string query = "SELECT ProductID, Name, Price, Quantity FROM Products";
+        DataTable dt = DbHelper.ExecuteSelect(query);
+        ViewState["Products"] = dt;
+        System.Diagnostics.Debug.WriteLine("Products loaded: " + dt.Rows.Count);
+    }
 
-        private void BindPurchaseDetails()
+    private void BindPurchaseDetails()
         {
             gvPurchaseDetails.DataSource = PurchaseDetails;
             gvPurchaseDetails.DataBind();
@@ -91,22 +92,22 @@ using System.Data.SqlClient;
                 var footer = gvPurchaseDetails.FooterRow;
                 var ddlProduct = (System.Web.UI.WebControls.DropDownList)footer.FindControl("ddlProduct");
                 var txtQuantity = (System.Web.UI.WebControls.TextBox)footer.FindControl("txtQuantity");
-                var txtUnitPrice = (System.Web.UI.WebControls.TextBox)footer.FindControl("txtUnitPrice");
+                var txtPrice = (System.Web.UI.WebControls.TextBox)footer.FindControl("txtPrice");
 
                 int productId;
                 int quantity;
-                decimal unitPrice;
+                decimal Price;
 
                 if (int.TryParse(ddlProduct.SelectedValue, out productId) &&
                     int.TryParse(txtQuantity.Text, out quantity) &&
-                    decimal.TryParse(txtUnitPrice.Text, out unitPrice))
+                    decimal.TryParse(txtPrice.Text, out Price))
                 {
                     DataTable dt = PurchaseDetails;
                     DataRow row = dt.NewRow();
                     row["ProductID"] = productId;
                     row["ProductName"] = ddlProduct.SelectedItem.Text;
                     row["Quantity"] = quantity;
-                    row["UnitPrice"] = unitPrice;
+                    row["Price"] = Price;
                     dt.Rows.Add(row);
                     PurchaseDetails = dt;
                     BindPurchaseDetails();
@@ -153,7 +154,7 @@ using System.Data.SqlClient;
 
             // Load purchase details
             string detailsQuery = @"
-            SELECT pd.ProductID, p.Name AS ProductName, pd.Quantity, pd.UnitPrice
+            SELECT pd.ProductID, p.Name AS ProductName, pd.Quantity, pd.Price
             FROM PurchaseDetails pd
             INNER JOIN Products p ON pd.ProductID = p.ProductID
             WHERE pd.PurchaseID = @PurchaseID";
@@ -175,7 +176,7 @@ using System.Data.SqlClient;
             decimal totalAmount = 0;
             foreach (DataRow row in PurchaseDetails.Rows)
             {
-                totalAmount += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["UnitPrice"]);
+                totalAmount += Convert.ToInt32(row["Quantity"]) * Convert.ToDecimal(row["Price"]);
             }
 
             if (Request.QueryString["id"] != null)
@@ -197,12 +198,12 @@ using System.Data.SqlClient;
                 // Insert new details
                 foreach (DataRow row in PurchaseDetails.Rows)
                 {
-                    string insertDetail = "INSERT INTO PurchaseDetails (PurchaseID, ProductID, Quantity, UnitPrice) VALUES (@PurchaseID, @ProductID, @Quantity, @UnitPrice)";
+                    string insertDetail = "INSERT INTO PurchaseDetails (PurchaseID, ProductID, Quantity, Price) VALUES (@PurchaseID, @ProductID, @Quantity, @Price)";
                     DbHelper.ExecuteNonQuery(insertDetail,
                         new SqlParameter("@PurchaseID", purchaseId),
                         new SqlParameter("@ProductID", row["ProductID"]),
                         new SqlParameter("@Quantity", row["Quantity"]),
-                        new SqlParameter("@UnitPrice", row["UnitPrice"])
+                        new SqlParameter("@Price", row["Price"])
                     );
                 }
             }
@@ -220,12 +221,12 @@ using System.Data.SqlClient;
                 // Insert details
                 foreach (DataRow row in PurchaseDetails.Rows)
                 {
-                    string insertDetail = "INSERT INTO PurchaseDetails (PurchaseID, ProductID, Quantity, UnitPrice) VALUES (@PurchaseID, @ProductID, @Quantity, @UnitPrice)";
+                    string insertDetail = "INSERT INTO PurchaseDetails (PurchaseID, ProductID, Quantity, Price) VALUES (@PurchaseID, @ProductID, @Quantity, @Price)";
                     DbHelper.ExecuteNonQuery(insertDetail,
                         new SqlParameter("@PurchaseID", purchaseId),
                         new SqlParameter("@ProductID", row["ProductID"]),
                         new SqlParameter("@Quantity", row["Quantity"]),
-                        new SqlParameter("@UnitPrice", row["UnitPrice"])
+                        new SqlParameter("@Price", row["Price"])
                     );
                 }
             }

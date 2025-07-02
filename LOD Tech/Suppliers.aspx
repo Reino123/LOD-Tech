@@ -9,6 +9,9 @@
 <body>
     <form id="form1" runat="server">
         <div class="container mt-4">
+            <a href="Default.aspx" class="btn btn-secondary mb-3">
+                ← Back to ERP
+            </a>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>Suppliers</h2>
                 <a href="SupplierEdit.aspx" class="btn btn-primary">Add Supplier</a>

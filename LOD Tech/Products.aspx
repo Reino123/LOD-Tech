@@ -9,6 +9,9 @@
 <body>
     <form id="form1" runat="server">
         <div class="container mt-4">
+            <a href="Default.aspx" class="btn btn-secondary mb-3">
+                ← Back to ERP
+            </a>
             <h2>Products</h2>
             <a href="ProductEdit.aspx" class="btn btn-primary mb-3">Add Product</a>
             <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered"
